@@ -2,40 +2,64 @@ package com.bridgelabz;
 
 public class EmployeeWage {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		final int PART_TIME = 1;
-        final int FULL_TIME = 2;
-        final int WAGE_PER_HR = 20;
-        final int MAX_WORKING_DAYS = 20;
-        final int MAX_WORKING_HRS = 100;
-
-        int totalWage = 0;
-        int workingHrs = 0;
-        System.out.printf("%5s  %5s  %5s  %5s\n", "Day", "Workinghrs", "Wage", "Total working hrs");
-        for (int day = 1, totalWorkingHrs = 0; day <= MAX_WORKING_DAYS
-                && totalWorkingHrs < MAX_WORKING_HRS; day++, totalWorkingHrs += workingHrs)
-        {
-
-            int empCheck = (int) (Math.random() * 100) % 3;
-            switch (empCheck)
-            {
-            case FULL_TIME:
-                workingHrs = 8;
-                break;
-            case PART_TIME:
-                workingHrs = 4;
-                break;
-            default:
-                workingHrs = 0;
-                break;
-            }
-            int wage = workingHrs * WAGE_PER_HR;
-            totalWage += wage;
-            System.out.printf("%5d  %5d  %5d  %5d\n", day, workingHrs, wage, totalWorkingHrs + workingHrs);
-
-        }
-        
-        System.out.println("Total wage for a month is " + totalWage);
-    }
+	public static final int IS_EMP_PRESENT = 1;
+	public static final int IS_PART_TIME= 2;
+	
+	public CompanyEmployeWage[] companyEmployeWageArray;
+	private int numOfCompanies = 0;
+	
+	
+	public EmployeeWage() {
+		super();
+		companyEmployeWageArray = new CompanyEmployeWage[5];
+	}
+	public void addcompanyEmpWage(int WAGE_PER_HOUR, int MAX_HRS_ALLOWED, int NUM_OF_WROKING_DAY, String company) {
+		companyEmployeWageArray[numOfCompanies] = new CompanyEmployeWage(WAGE_PER_HOUR, MAX_HRS_ALLOWED, NUM_OF_WROKING_DAY, company);
+		numOfCompanies++;
+	}
+	public void computeEmpWage() {
+		for (int i = 0; i<companyEmployeWageArray.length; i++) {
+			CompanyEmployeWage companyEmployeWage = companyEmployeWageArray[i];
+			if (companyEmployeWage != null) {
+				int monthlyEmployeeWage = this.calculateEmpWage(companyEmployeWage);
+				companyEmployeWage.setTotalEmpWage(monthlyEmployeeWage);
+				System.out.println("Company employee wage is :"+companyEmployeWage);
+			}
+		}
+	}
+	public int calculateEmpWage(CompanyEmployeWage companyEmployeWage) {
+		int monthlyEmpWage = 0;
+		int totalWorkingDays = 0;
+		int totalEmpHrs = 0;		
+		while (totalEmpHrs < companyEmployeWage.MAX_HRS_ALLOWED && totalWorkingDays < companyEmployeWage.NUM_OF_WROKING_DAY)
+		{
+			totalWorkingDays++ ;
+			int dailywage = 0;
+			int empHrs = 0;
+			double empCheck = Math.floor(Math.random() * 10) % 3;
+			switch ((int) empCheck) {
+			case IS_EMP_PRESENT:
+				empHrs= 8;
+				break;
+			case IS_PART_TIME:
+				empHrs = 4;
+				break;
+			default:
+				empHrs = 0;
+				break;
+			}
+			totalEmpHrs = totalEmpHrs + empHrs;
+			dailywage = companyEmployeWage.WAGE_PER_HOUR * empHrs ;
+			monthlyEmpWage = monthlyEmpWage + dailywage ;
+			System.out.println(monthlyEmpWage);
+		}
+		return monthlyEmpWage;
+	}
+	
+	public static void main(String[] args) 
+	{
+		EmployeeWage wageBuilder = new EmployeeWage();
+		wageBuilder.addcompanyEmpWage(20, 100, 20, "Dmart");
+		wageBuilder.addcompanyEmpWage(15, 200, 20, "Relience");
+	}
 }
