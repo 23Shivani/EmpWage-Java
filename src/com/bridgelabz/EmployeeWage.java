@@ -5,11 +5,22 @@ public class EmployeeWage {
 	public static final int IS_PART_TIME = 1;
 	public static final int IS_FULL_TIME= 2;
 	
-	public static int computeEmpWage(String company, int WagePerHour, int numOfWorkingDays, int maxHrsPerMonth) {
-	int empHrs=0;
-	int totalEmpHrs = 0;
-	int totalWorkingDays = 0;
+	private final String company;
+	private final int WagePerHour;
+	private final int numOfWorkingDays;
+	private final int maxHrsPerMonth;
+	private int totalEmpWage;
 	
+	public EmployeeWage(String company, int WagePerHour, int numOfWorkingDays, int maxHrsPerMonth){
+		this.company = company;
+		this.WagePerHour = WagePerHour;
+		this.numOfWorkingDays = numOfWorkingDays;
+		this.maxHrsPerMonth = maxHrsPerMonth;
+	}
+	public void computeEmpWage() {
+		//var
+		int empHrs = 0, totalEmpHrs =0, totalWorkingDays=0;
+		//computation
 	while (totalEmpHrs <= maxHrsPerMonth && totalWorkingDays < numOfWorkingDays) {
 		totalWorkingDays++;
 		int empCheck = (int) Math.floor(Math.random() *10) %3;
@@ -26,12 +37,21 @@ public class EmployeeWage {
 		totalEmpHrs += empHrs;
 		System.out.println("Day: " + totalWorkingDays + " Emp Hr: " +empHrs);
 	}
-	int totalEmpWage = totalEmpHrs *WagePerHour;
-	System.out.println("Total Emp Wage for Company: " + company +" is: " + totalEmpWage);
-	return totalEmpWage;
+	totalEmpWage = totalEmpHrs * WagePerHour;
 }
+
+@Override
+public String toString() {
+	return "Total Emp Wage for Company: " +company+ " is: " + totalEmpWage;
+}
+	
 public static void main(String[] args) {
-	computeEmpWage("Dmart",20 , 2 , 10);
-	computeEmpWage("BigBazaar", 10, 4, 20);
-}
+		EmployeeWage bigBazaar = new EmployeeWage("bigBazaar", 20, 2, 10);
+		EmployeeWage max = new EmployeeWage("max", 10, 4, 20);
+		bigBazaar.computeEmpWage();
+		System.out.println(bigBazaar);
+		max.computeEmpWage();
+		System.out.println(max);
+	}	
+
 }
